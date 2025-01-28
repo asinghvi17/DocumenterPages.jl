@@ -3,7 +3,11 @@ uuid = "3b6f6c89-491e-49ab-a70c-af796c43d097"
 authors = ["Anshul Singhvi <anshulsinghvi@gmail.com> and contributors"]
 version = "0.1.0-DEV"
 
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+
 [compat]
+Documenter = "1.8.0"
 julia = "1.6.7"
 
 [extras]

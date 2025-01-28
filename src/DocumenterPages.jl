@@ -1,5 +1,9 @@
 module DocumenterPages
 
-# Write your package code here.
+using Documenter
+
+include("pagenode.jl")
+
+export PageNode
 
 end
