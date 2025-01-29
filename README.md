@@ -4,6 +4,15 @@
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://asinghvi17.github.io/DocumenterPages.jl/dev/)
 [![Build Status](https://github.com/asinghvi17/DocumenterPages.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/asinghvi17/DocumenterPages.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
+so that you can do this in `Documenter.makedocs` (see the docs for what this looks like!)
+
+```julia
+    pages=[
+        "Home" => "index.md",
+        PageNode("Examples" => "gallery.md", ["helk" => "helk.md", "park.md"])
+    ],
+```
+
 ```julia-repl
 julia> using DocumenterPages
 
