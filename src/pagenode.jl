@@ -8,23 +8,21 @@ struct PageNode
     visible::Union{Bool, Nothing}
     collapsed::Union{Bool, Nothing} # nothing here indicates that we follow the global spec
 end
-# TODO: kwarg constructor, setfield constructor, better show
-# tree like show
-# define AbstractTree interface on PageNode
+
+# TODO: kwarg constructor, setfield constructor,
 
 PageNode(input::Pair; kw...) = PageNode(input[1], input[2]; kw...)
 PageNode(input::String; visible = nothing, collapsed = nothing) = PageNode(input, PageNode[], nothing, visible, collapsed)
 PageNode(title::String, source::String; visible = nothing, collapsed = nothing) = PageNode(source, PageNode[], title, visible, collapsed)
 
-function PageNode(input::Vector; kw...)
+function PageNode(input::Vector; visible = nothing, collapsed = nothing, kw...)
 
 	children = PageNode.(input; kw...)
-
 	return PageNode(nothing, children, nothing, visible, collapsed)
 
 end
 
-function PageNode(titlechildren::Pair{String, Vector}; kw...)
+function PageNode(titlechildren::Pair{String, Vector}; visible = nothing, collapsed = nothing, kw...)
 
 	children = PageNode.(titlechildren[2]; kw...)
 
@@ -40,22 +38,19 @@ function PageNode(original_page, children::Vector; kw...)
 end
 
 
-function Documenter.walk_navpages(page::PageNode, parent, doc)
-    # parent can also be nothing (for top-level elements)
-    parent_visible = isnothing(parent) || parent.visible
-    if !isnothing(page.page)
-        src = normpath(page.page)
-        src in keys(doc.blueprint.pages) || error("'$src' is not an existing page!")
+function _show_page_node(io::IO, node::PageNode; kw...)
+    if isnothing(node.page)
+        print(io, node.title_override)
+    else
+        if isnothing(node.title_override)
+            print(io, node.page)
+        else
+            print(io, node.title_override, " => ", node.page)
+        end
     end
+end
 
-    title = page.title_override
-    visible = isnothing(page.visible) ? parent_visible : page.visible
-    collapsed = page.collapsed # TODO we need NavNode support for this
-    children = page.children
-
-    nn = Documenter.NavNode(src, title, parent)
-    (src === nothing) || push!(doc.internal.navlist, nn)
-    nn.visible = parent_visible && visible
-    nn.children = Documenter.walk_navpages(children, nn, doc)
-    return nn
+function Base.show(io::IO, ::MIME"text/plain", pn::PageNode)
+    println(io, "PageNode $(pn.visible == false ? "(hidden) " : "")with $(length(pn.children)) children:")
+    AbstractTrees.print_tree(_show_page_node, io, pn)
 end

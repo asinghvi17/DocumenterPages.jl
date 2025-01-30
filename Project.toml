@@ -4,9 +4,11 @@ authors = ["Anshul Singhvi <anshulsinghvi@gmail.com> and contributors"]
 version = "0.1.0-DEV"
 
 [deps]
+AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 
 [compat]
+AbstractTrees = "0.4.5"
 Documenter = "1.8.0"
 julia = "1.6.7"
 
