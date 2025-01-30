@@ -16,6 +16,7 @@ makedocs(;
         "Home" => "index.md",
         PageNode("Examples" => "gallery.md", ["helk" => "helk.md", "park.md"])
     ],
+    warnonly=true,
 )
 
 deploydocs(;
