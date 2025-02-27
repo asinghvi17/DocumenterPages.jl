@@ -39,6 +39,7 @@ end
 PageNode(input::Pair; kw...) = PageNode(input[1], input[2]; kw...)
 PageNode(input::String; visible = nothing, collapsed = nothing) = PageNode(input, PageNode[], nothing, visible, collapsed)
 PageNode(title::String, source::String; visible = nothing, collapsed = nothing) = PageNode(source, PageNode[], title, visible, collapsed)
+PageNode(pn::PageNode) = pn
 
 function PageNode(input::Vector; visible = nothing, collapsed = nothing, kw...)
 
