@@ -14,7 +14,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        PageNode("Examples" => "gallery.md", ["helk" => "helk.md", "park.md"])
+        PageNode("Examples" => "gallery.md", ["helk" => "helk.md", PageNode("park.md", ["helk" => "helk.md"])])
     ],
     warnonly=true,
 )
