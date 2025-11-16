@@ -37,7 +37,7 @@ With DocumenterPages.jl, I can do this:
 ```julia
 pages = [
     "Home" => "index.md",
-    "Examples" => PageNode("gallery.md", ["helk" => "helk.md", "park" => "park.md"])
+    PageNode("Examples" => "gallery.md", ["helk" => "helk.md", "park" => "park.md"])
 ]
 ```
 
