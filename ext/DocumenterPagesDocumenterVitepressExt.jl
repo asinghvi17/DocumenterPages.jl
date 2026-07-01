@@ -35,7 +35,9 @@ function DocumenterVitepress.pagelist2str(doc, node::PageNode, sidenav::Val{:sid
 end
 
 # Navbar: prefer a direct link; otherwise a dropdown of children; else plain text.
+# `navbar === false` drops the node (the :sidebar method above doesn't check it).
 function DocumenterVitepress.pagelist2str(doc, node::PageNode, sidenav::Val{:navbar})
+    node.navbar === false && return ""
     name = _esc(_title(doc, node))
     if !isnothing(node.page)
         return "text: '$(name)', link: '$(_link(node.page))'"
