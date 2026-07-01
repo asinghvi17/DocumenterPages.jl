@@ -1,19 +1,27 @@
 name = "DocumenterPages"
 uuid = "3b6f6c89-491e-49ab-a70c-af796c43d097"
 authors = ["Anshul Singhvi <anshulsinghvi@gmail.com> and contributors"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 
+[weakdeps]
+DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
+
+[extensions]
+DocumenterPagesDocumenterVitepressExt = "DocumenterVitepress"
+
 [compat]
 AbstractTrees = "0.4.5"
 Documenter = "1.8.0"
+DocumenterVitepress = "0.3"
 julia = "1.6.7"
 
 [extras]
+DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "DocumenterVitepress"]
