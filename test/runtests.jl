@@ -1,4 +1,5 @@
 using DocumenterPages, AbstractTrees
+using DocumenterVitepress  # activates DocumenterPagesDocumenterVitepressExt
 using Test
 
 @testset "DocumenterPages.jl" begin
@@ -62,6 +63,39 @@ using Test
         @test occursin("gallery.md", printed_tree)
         @test occursin("helk.md", printed_tree)
         @test occursin("park.md", printed_tree)
+    end
+
+    @testset "DocumenterVitepress extension" begin
+        # Every node carries a title override, so get_title (which needs a real
+        # Documenter doc) is never reached and we can pass `nothing` for `doc`.
+        node = PageNode("Platform Features" => "tutorials/index.md",
+            ["Applications" => "tutorials/applications/index.md",
+             "DataSets" => "tutorials/datasets/index.md"])
+
+        # Sidebar: header is a link AND a collapsible parent of its children.
+        side = DocumenterVitepress.pagelist2str(nothing, node, Val(:sidebar))
+        @test occursin("text: 'Platform Features'", side)
+        @test occursin("link: '/tutorials/index'", side)
+        @test occursin("collapsed:", side)
+        @test occursin("items:", side)
+        @test occursin("link: '/tutorials/applications/index'", side)
+        @test occursin("link: '/tutorials/datasets/index'", side)
+
+        # Navbar: prefers the direct link over a dropdown.
+        nav = DocumenterVitepress.pagelist2str(nothing, node, Val(:navbar))
+        @test occursin("text: 'Platform Features'", nav)
+        @test occursin("link: '/tutorials/index'", nav)
+        @test !occursin("items:", nav)
+
+        # A childless PageNode is a plain leaf link.
+        leaf = PageNode("Solo" => "solo.md")
+        @test DocumenterVitepress.pagelist2str(nothing, leaf, Val(:sidebar)) == "text: 'Solo', link: '/solo'"
+
+        # collapsed=true is honoured; an apostrophe in the title is escaped.
+        collapsed_node = PageNode("What's New" => "news.md", ["v1" => "v1.md"]; collapsed=true)
+        cs = DocumenterVitepress.pagelist2str(nothing, collapsed_node, Val(:sidebar))
+        @test occursin("collapsed: true", cs)
+        @test occursin("text: 'What\\'s New'", cs)
     end
 
 end
