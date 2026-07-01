@@ -36,6 +36,13 @@ using Test
         pn4 = PageNode("test.md", visible=false, collapsed=true)
         @test pn4.visible === false
         @test pn4.collapsed === true
+
+        # `navbar` defaults to unset, and can be set independently of `visible`.
+        pn5 = PageNode("test.md")
+        @test isnothing(pn5.navbar)
+        pn6 = PageNode("test.md"; navbar=false)
+        @test pn6.navbar === false
+        @test isnothing(pn6.visible) # unaffected by `navbar`
     end
 
     @testset "AbstractTrees interface" begin
@@ -82,10 +89,10 @@ using Test
         @test occursin("link: '/tutorials/datasets/index'", side)
 
         # Navbar: prefers the direct link over a dropdown.
-        nav = DocumenterVitepress.pagelist2str(nothing, node, Val(:navbar))
-        @test occursin("text: 'Platform Features'", nav)
-        @test occursin("link: '/tutorials/index'", nav)
-        @test !occursin("items:", nav)
+        navbar_str = DocumenterVitepress.pagelist2str(nothing, node, Val(:navbar))
+        @test occursin("text: 'Platform Features'", navbar_str)
+        @test occursin("link: '/tutorials/index'", navbar_str)
+        @test !occursin("items:", navbar_str)
 
         # A childless PageNode is a plain leaf link.
         leaf = PageNode("Solo" => "solo.md")
@@ -96,6 +103,13 @@ using Test
         cs = DocumenterVitepress.pagelist2str(nothing, collapsed_node, Val(:sidebar))
         @test occursin("collapsed: true", cs)
         @test occursin("text: 'What\\'s New'", cs)
+
+        # navbar=false hides a node from the navbar only; the sidebar is unaffected.
+        hidden_node = PageNode("Releases" => "releases.md"; navbar=false)
+        @test DocumenterVitepress.pagelist2str(nothing, hidden_node, Val(:navbar)) == ""
+        sidebar_str = DocumenterVitepress.pagelist2str(nothing, hidden_node, Val(:sidebar))
+        @test occursin("text: 'Releases'", sidebar_str)
+        @test occursin("link: '/releases'", sidebar_str)
     end
 
 end
