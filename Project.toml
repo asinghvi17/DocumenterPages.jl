@@ -17,7 +17,7 @@ DocumenterPagesDocumenterVitepressExt = "DocumenterVitepress"
 AbstractTrees = "0.4.5"
 Documenter = "1.8.0"
 DocumenterVitepress = "0.3"
-julia = "1.6.7"
+julia = "1.10"
 
 [extras]
 DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
